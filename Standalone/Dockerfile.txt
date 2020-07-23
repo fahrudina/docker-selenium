@@ -10,5 +10,9 @@ COPY start-selenium-standalone.sh /opt/bin/start-selenium-standalone.sh
 #==============================
 COPY selenium.conf /etc/supervisor/conf.d/
 
+COPY app.py /opt/bin/app.py
+
+RUN pip install flask
 
 EXPOSE 4444
+EXPOSE 5000

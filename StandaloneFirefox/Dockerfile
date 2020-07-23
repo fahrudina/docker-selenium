@@ -2,7 +2,7 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM selenium/node-firefox:4.0.0-alpha-6-20200721
+FROM asia.gcr.io/silicon-airlock-153323/selenium/node-firefox:latest
 LABEL authors=SeleniumHQ
 
 USER 1200
@@ -17,5 +17,9 @@ COPY start-selenium-standalone.sh /opt/bin/start-selenium-standalone.sh
 #==============================
 COPY selenium.conf /etc/supervisor/conf.d/
 
+COPY app.py /opt/bin/app.py
+
+RUN pip install flask
 
 EXPOSE 4444
+EXPOSE 5000

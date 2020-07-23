@@ -18,6 +18,8 @@ cat ./Dockerfile.txt >> ${FOLDER}/Dockerfile
 cp ./start-selenium-standalone.sh ${FOLDER}
 cp ./selenium.conf ${FOLDER}
 
+cp ./app.py ${FOLDER}
+
 BROWSER_LC=$(echo ${BROWSER} |  tr '[:upper:]' '[:lower:]')
 
 cat ./README.template.md \

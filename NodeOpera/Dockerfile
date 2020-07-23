@@ -2,7 +2,7 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM selenium/node-base:4.0.0-alpha-6-20200721
+FROM asia.gcr.io/silicon-airlock-153323/selenium/node-base:latest
 LABEL authors=SeleniumHQ
 
 USER root
@@ -24,6 +24,8 @@ ARG OPERA_VERSION="opera-stable"
 RUN wget -q -O - https://deb.opera.com/archive.key | apt-key add - \
   && echo "deb https://deb.opera.com/opera-stable/ stable non-free" >> /etc/apt/sources.list.d/opera-stable.list \
   && apt-get update -qqy \
+  && apt-get -qqy install python3-venv \
+  && apt-get -qqy install python-pip \
   && apt-get -qqy install \
     ${OPERA_VERSION:-opera-stable} \
   && dpkg-divert --divert /usr/lib/x86_64-linux-gnu/opera/libffmpeg.so.orig \

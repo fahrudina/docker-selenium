@@ -2,7 +2,7 @@ NAME := $(or $(NAME),$(NAME),selenium)
 CURRENT_DATE := $(shell date '+%Y%m%d')
 BUILD_DATE := $(or $(BUILD_DATE),$(BUILD_DATE),$(CURRENT_DATE))
 VERSION := $(or $(VERSION),$(VERSION),4.0.0-alpha-6)
-TAG_VERSION := $(VERSION)-$(BUILD_DATE)
+TAG_VERSION := $(VERSION)
 NAMESPACE := $(or $(NAMESPACE),$(NAMESPACE),$(NAME))
 AUTHORS := $(or $(AUTHORS),$(AUTHORS),SeleniumHQ)
 PUSH_IMAGE := $(or $(PUSH_IMAGE),$(PUSH_IMAGE),false)
@@ -31,73 +31,73 @@ build: all
 ci: build test
 
 base:
-	cd ./Base && docker build $(BUILD_ARGS) -t $(NAME)/base:$(TAG_VERSION) .
+	cd ./Base && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/base:$(TAG_VERSION) .
 
 generate_hub:
 	cd ./Hub && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 hub: base generate_hub
-	cd ./Hub && docker build $(BUILD_ARGS) -t $(NAME)/hub:$(TAG_VERSION) .
+	cd ./Hub && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/hub:$(TAG_VERSION) .
 
 generate_distributor:
 	cd ./Distributor && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 distributor: base generate_distributor
-	cd ./Distributor && docker build $(BUILD_ARGS) -t $(NAME)/distributor:$(TAG_VERSION) .
+	cd ./Distributor && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/distributor:$(TAG_VERSION) .
 
 generate_router:
 	cd ./Router && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 router: base generate_router
-	cd ./Router && docker build $(BUILD_ARGS) -t $(NAME)/router:$(TAG_VERSION) .
+	cd ./Router && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/router:$(TAG_VERSION) .
 
 generate_sessions:
 	cd ./Sessions && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 sessions: base generate_sessions
-	cd ./Sessions && docker build $(BUILD_ARGS) -t $(NAME)/sessions:$(TAG_VERSION) .
+	cd ./Sessions && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/sessions:$(TAG_VERSION) .
 
 generate_node_base:
 	cd ./NodeBase && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 node_base: base generate_node_base
-	cd ./NodeBase && docker build $(BUILD_ARGS) -t $(NAME)/node-base:$(TAG_VERSION) .
+	cd ./NodeBase && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/node-base:$(TAG_VERSION) .
 
 generate_chrome:
 	cd ./NodeChrome && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 chrome: node_base generate_chrome
-	cd ./NodeChrome && docker build $(BUILD_ARGS) -t $(NAME)/node-chrome:$(TAG_VERSION) .
+	cd ./NodeChrome && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/node-chrome:$(TAG_VERSION) .
 
 generate_firefox:
 	cd ./NodeFirefox && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 firefox: node_base generate_firefox
-	cd ./NodeFirefox && docker build $(BUILD_ARGS) -t $(NAME)/node-firefox:$(TAG_VERSION) .
+	cd ./NodeFirefox && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/node-firefox:$(TAG_VERSION) .
 
 generate_opera:
 	cd ./NodeOpera && ./generate.sh $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 opera: node_base generate_opera
-	cd ./NodeOpera && docker build $(BUILD_ARGS) -t $(NAME)/node-opera:$(TAG_VERSION) .
+	cd ./NodeOpera && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/node-opera:$(TAG_VERSION) .
 
 generate_standalone_firefox:
 	cd ./Standalone && ./generate.sh StandaloneFirefox node-firefox Firefox $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 standalone_firefox: firefox generate_standalone_firefox
-	cd ./StandaloneFirefox && docker build $(BUILD_ARGS) -t $(NAME)/standalone-firefox:$(TAG_VERSION) .
+	cd ./StandaloneFirefox && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/standalone-firefox:$(TAG_VERSION) .
 
 generate_standalone_chrome:
 	cd ./Standalone && ./generate.sh StandaloneChrome node-chrome Chrome $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 standalone_chrome: chrome generate_standalone_chrome
-	cd ./StandaloneChrome && docker build $(BUILD_ARGS) -t $(NAME)/standalone-chrome:$(TAG_VERSION) .
+	cd ./StandaloneChrome && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/standalone-chrome:$(TAG_VERSION) .
 
 generate_standalone_opera:
 	cd ./Standalone && ./generate.sh StandaloneOpera node-opera Opera $(TAG_VERSION) $(NAMESPACE) $(AUTHORS)
 
 standalone_opera: opera generate_standalone_opera
-	cd ./StandaloneOpera && docker build $(BUILD_ARGS) -t $(NAME)/standalone-opera:$(TAG_VERSION) .
+	cd ./StandaloneOpera && gcloud builds submit --timeout="1h" $(BUILD_ARGS) -t $(NAME)/standalone-opera:$(TAG_VERSION) .
 
 
 # https://github.com/SeleniumHQ/docker-selenium/issues/992
